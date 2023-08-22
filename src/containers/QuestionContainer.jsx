@@ -5,18 +5,27 @@ function QuestionContainer({question,score,setScore,currentQuestion,setCurrentQu
     const [selectedOption,setSelectedOption]=useState(null)
     const [submitted,setSubmitted]=useState(false)
 
-    const selectOption=(i)=>{
-        setSelectedOption(i)
-    }
     const submitOption=()=>{
         if (selectedOption!=null){
-            if (selectedOption==0){
-                setScore(score+1)
-            }
-            setSelectedOption(null)
-            setCurrentQuestion(currentQuestion+1)
-            setSubmitted(false)
+            setSubmitted(true)
+            setTimeout( () => {
+                if (selectedOption==0){
+                    setScore(score+1)
+                }
+                setSubmitted(false)
+                setSelectedOption(null)
+                setCurrentQuestion(currentQuestion+1)
+                shuffle=true
+            },2000)
         }
+    }
+
+    const options=question.options.map((option,i)=><Option content={option} submitted={submitted}
+    selectedOption={selectedOption} selectOption={()=>{submitted?null:setSelectedOption(i)}} i={i} key={i}/>)
+    const shuffledOptions=[]
+    while (shuffledOptions.length<4){
+        const option=options[Math.floor(Math.random()*4)]
+        !(shuffledOptions.includes(option)) && shuffledOptions.push(option)
     }
 
     return(
@@ -24,14 +33,15 @@ function QuestionContainer({question,score,setScore,currentQuestion,setCurrentQu
             <h3 className='question'>{question.question}</h3>
             <br/>
             <div className='options'>
-            {question.options.map((option,i)=><Option content={option} submitted={submitted}
-            selectedOption={selectedOption} selectOption={selectOption} i={i} key={i}/>)}
+                {shuffledOptions}
             </div>
             <br/>
-            <button className="submit" onClick={()=>{
-                setTimeout(submitOption,2000)
-                setSubmitted(true)
-            }}>submit</button>
+            {submitted?
+                <p className="colour_key">
+                    <span className="text_red">red - correct!</span>
+                    <span className="text_green">green - wrong</span>
+                </p>
+            : <button className="submit" onClick={submitOption}>submit</button>}
         </div>
     )
 }

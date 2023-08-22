@@ -51,3 +51,16 @@
 .green{
   background-color: green;
 }
+
+.colour_key{
+  display: flex;
+  gap: 10px;
+}
+
+.text_red{
+  color: red;
+}
+
+.text_green{
+  color: green;
+}
