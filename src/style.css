@@ -35,7 +35,8 @@
 
 .option{
   margin: 5px 30px;
-  height: 30px;
+  min-height: 30px;
+  max-height: fit-content;
   border: solid 1px grey;
   padding: 5px;
 }
