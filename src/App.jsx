@@ -3,28 +3,6 @@ import QuizInfo from "./components/QuizInfo"
 import QuestionContainer from "./containers/QuestionContainer"
 import Finish from "./components/Finish"
 
-// const questionz=[
-//   {question: "What was the name of the first computer virus that spread in the wild?",
-//   options: ["Brain", "Creeper", "ILOVEYOU", "Melissa"],
-//   answer: "Brain"},
-
-//   {question: "Which programming language is often referred to as the 'mother of all languages'?",
-//   options: ["C", "Java", "Fortran", "Assembly"],
-//   answer: "C"},
-
-//   {question: "In what year was the company Google founded?",
-//   options: ["1998","1996", "2000", "2004"],
-//   answer: "1998"}
-// ];
-
-// gonna make a better shuffle algorithm that takes option[i] & inserts it at a random index before it
-// for (const question of questionz){
-//   for (i=0;i<question.options.length;i++){
-//     question.options[i]
-//   }
-// }
-
-
 function App() {
   const [questions,setQuestions]=useState([])
   const [currentQuestion,setCurrentQuestion]=useState(0)
@@ -42,13 +20,13 @@ function App() {
     })
     const formattedQuestions=[]
     for (const apiQuestion of responseObject.results){ // for each question
-      const shuffledOptions=[]
-      while (shuffledOptions.length<apiQuestion.options.length){ // until shuffled array is as big as og array
-        const option=apiQuestion.options[Math.floor(Math.random()*apiQuestion.options.length)] // pick random option
-        !(shuffledOptions.includes(option)) && shuffledOptions.push(option) // if not in shuffled, push
+      for (let i=0;i<apiQuestion.options.length;i++){
+        const option=apiQuestion.options.pop()
+        apiQuestion.options.splice(Math.floor(Math.random()*(i+1)),0,option)
+        // pop last option & insert back in somewhere between 0 & i, for each option
       }
       // format question & add to array
-      formattedQuestions.push({question:apiQuestion.question,options:shuffledOptions,answer:apiQuestion.correct_answer})
+      formattedQuestions.push({question:apiQuestion.question,options:apiQuestion.options,answer:apiQuestion.correct_answer})
     }
     setQuestions(formattedQuestions) // set questions useState to formatted array
   }
