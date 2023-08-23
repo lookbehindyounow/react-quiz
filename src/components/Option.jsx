@@ -1,8 +1,9 @@
-function Option({content,correct,submitted,selectedOption,selectOption,i}){
+function Option({option,correct,submitted,selected,selectOption,i}){
     return(
-        <button className={"option "+(
-            selectedOption==i   ?   (submitted ? (correct?"red":"green") : "blue")   :   (submitted && correct && "red")
-        )} onClick={selectOption}>{content}</button>
+        <button className={"option "+( // <-- option is css class applied to all
+            // colour class depends on 3 booleans
+            selected  ?  (submitted ? (correct?"red":"green") : "blue")  :  (submitted && correct && "red")
+        )} onClick={selectOption}>{option}</button>
     )
 }
 export default Option

@@ -5,16 +5,16 @@ function QuestionContainer({question,score,setScore,currentQuestion,setCurrentQu
     const [selectedOption,setSelectedOption]=useState(null)
     const [submitted,setSubmitted]=useState(false)
 
-    const submitOption=()=>{
-        if (selectedOption!=null){
+    const submitOption=()=>{ // on submit
+        if (selectedOption!=null){ // if an option is selected
             setSubmitted(true)
-            setTimeout( () => {
-                if (selectedOption==0){
-                    setScore(score+1)
+            setTimeout( () => { // after 2 second delay (to read if your answer was right)
+                if (question.options[selectedOption]==question.answer){
+                    setScore(score+1) // update score if correct
                 }
                 setSubmitted(false)
                 setSelectedOption(null)
-                setCurrentQuestion(currentQuestion+1)
+                setCurrentQuestion(currentQuestion+1) // next question
             },2000)
         }
     }
@@ -24,17 +24,19 @@ function QuestionContainer({question,score,setScore,currentQuestion,setCurrentQu
             <h3 className='question'>{question.question}</h3>
             <br/>
             <div className='options'>
-                {question.options.map((option,i)=>
-                    <Option content={option} correct={option==question.answer} submitted={submitted} selectedOption={selectedOption}
-                    selectOption={()=>{submitted?null:setSelectedOption(i)}} i={i} key={i}/>)}
+                {question.options.map((option,i)=> // react element for each option
+                    <Option option={option} correct={option==question.answer} submitted={submitted}
+                    selected={selectedOption==i} selectOption={()=>{submitted?null:setSelectedOption(i)}}
+                    i={i} key={i}/>)} {/* if submitted, selectOption does nothing^^, otherwise selects self */}
             </div>
             <br/>
-            {submitted?
+            {submitted? // if submitted, show colour key for answers
                 <p className="colour_key">
                     <span className="text_red">red - correct!</span>
                     <span className="text_green">green - wrong</span>
                 </p>
             : <button className="submit" onClick={submitOption}>submit</button>}
+            {/* ^^otherwise show submit button */}
         </div>
     )
 }
