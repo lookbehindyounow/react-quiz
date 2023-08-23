@@ -1,9 +1,7 @@
-import {useState} from "react"
-
-function Option({content,submitted,selectedOption,selectOption,i}){
+function Option({content,correct,submitted,selectedOption,selectOption,i}){
     return(
         <button className={"option "+(
-            selectedOption==i   ?   (submitted ? (i==0?"red":"green") : "blue")   :   (submitted && (i==0&&"red"))
+            selectedOption==i   ?   (submitted ? (correct?"red":"green") : "blue")   :   (submitted && correct && "red")
         )} onClick={selectOption}>{content}</button>
     )
 }

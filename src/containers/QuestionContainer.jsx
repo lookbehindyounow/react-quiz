@@ -15,17 +15,8 @@ function QuestionContainer({question,score,setScore,currentQuestion,setCurrentQu
                 setSubmitted(false)
                 setSelectedOption(null)
                 setCurrentQuestion(currentQuestion+1)
-                shuffle=true
             },2000)
         }
-    }
-
-    const options=question.options.map((option,i)=><Option content={option} submitted={submitted}
-    selectedOption={selectedOption} selectOption={()=>{submitted?null:setSelectedOption(i)}} i={i} key={i}/>)
-    const shuffledOptions=[]
-    while (shuffledOptions.length<4){
-        const option=options[Math.floor(Math.random()*4)]
-        !(shuffledOptions.includes(option)) && shuffledOptions.push(option)
     }
 
     return(
@@ -33,7 +24,9 @@ function QuestionContainer({question,score,setScore,currentQuestion,setCurrentQu
             <h3 className='question'>{question.question}</h3>
             <br/>
             <div className='options'>
-                {shuffledOptions}
+                {question.options.map((option,i)=>
+                    <Option content={option} correct={option==question.answer} submitted={submitted} selectedOption={selectedOption}
+                    selectOption={()=>{submitted?null:setSelectedOption(i)}} i={i} key={i}/>)}
             </div>
             <br/>
             {submitted?
